@@ -2,3 +2,5 @@
 /module-1/task/output.csv
 /module-1/task/ny_taxi_postgres_data/
 /module-1/.env/
+/module-1/task/green_tripdata.csv
+/module-1/task/taxi_zone_lookup.csv
