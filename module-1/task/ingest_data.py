@@ -25,8 +25,8 @@ def main(params: argparse.Namespace):
 
     process_green_trip_data(GREEN_TRIPDATA_OUTPUT_DATA, engine,
                             GREEN_TRIPDATA_OUTPUT_DATA.split('.')[0])
-    process_green_trip_data(TAXI_ZONE_LOOKUP_OUTPUT_DATA, engine,
-                            TAXI_ZONE_LOOKUP_OUTPUT_DATA.split('.')[0])
+    process_taxi_zone_lookup_data(TAXI_ZONE_LOOKUP_OUTPUT_DATA, engine,
+                                  TAXI_ZONE_LOOKUP_OUTPUT_DATA.split('.')[0])
 
 
 def connect_to_db(user: str, password: str, host: str, port: str = '5432',
@@ -76,21 +76,19 @@ def process_taxi_zone_lookup_data(file_path: str, engine: sqlalchemy.engine, tab
 
 
 def download_data_with_bash(url: str, output_file: str, gzip: bool = False):
-    print("downloading data")
+    print(f"downloading data into {output_file}")
     try:
-        if os.path.exists(output_file):
-            print("file already exists")
-            return
+        # subprocess.run(['wget', url, '-O', output_file])
+        if gzip:
+            print(f'wget -qO - {url} | gunzip > {output_file}')
+            os.system(f'wget -qO - {url} | gunzip > {output_file}')
         else:
-            with open(output_file, 'w') as f:
-                f.write('')
-            # subprocess.run(['wget', url, '-O', output_file])
-            if gzip:
-                output_file = output_file + '.gz'
-                os.system(f'wget -qO - {url} | gunzip > {output_file}')
-            else:
-                os.system(f'wget {url} -O {output_file}')
-            print("downloaded data")
+            if not os.path.exists(output_file):
+                with open(output_file, 'w') as f:
+                    f.write('')
+            print(f'wget -qO - {url} | gunzip > {output_file}')
+            os.system(f'wget {url} -O {output_file}')
+        print("downloaded data")
     except Exception as e:
         print(e)
 
