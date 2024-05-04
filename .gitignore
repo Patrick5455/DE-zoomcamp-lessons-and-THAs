@@ -5,3 +5,4 @@
 /module-1/ingestion_task/green_tripdata.csv
 /module-1/ingestion_task/taxi_zone_lookup.csv
 /module-1/ingestion_task/green_tripdata.csv.gz
+*.env
